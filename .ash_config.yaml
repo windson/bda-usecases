@@ -1,0 +1,37 @@
+exclude_paths:
+  - "infrastructure/cdk.out/**"
+  - "**/cdk.out/**"
+  - "cdk.out/**"
+  - "**/*.pyc"
+  - "**/__pycache__/**"
+  - ".git/**"
+  - ".ash/**"
+  - "node_modules/**"
+  - ".venv/**"
+  - "venv/**"
+
+# Scanner configuration
+scanners:
+  detect-secrets:
+    enabled: true
+  bandit:
+    enabled: true
+  semgrep:
+    enabled: true
+  cdk-nag:
+    enabled: true
+  cfn-nag:
+    enabled: true
+  npm-audit:
+    enabled: true
+  grype:
+    enabled: true
+  syft:
+    enabled: true
+  opengrep:
+    enabled: true
+  checkov:
+    enabled: true
+
+# Severity threshold
+severity_threshold: "MEDIUM"

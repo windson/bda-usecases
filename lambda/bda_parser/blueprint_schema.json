@@ -1,0 +1,144 @@
+{
+  "class": "Resume",
+  "description": "Blueprint for extracting structured data from resume documents",
+  "definitions": {
+    "PersonalInfo": {
+      "type": "object",
+      "properties": {
+        "full_name": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract the candidate's full name"
+        },
+        "email": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract the email address"
+        },
+        "phone": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract the phone number"
+        },
+        "address": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract the address"
+        },
+        "linkedin": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract LinkedIn profile URL"
+        }
+      }
+    },
+    "EducationalInfo": {
+      "type": "object",
+      "properties": {
+        "institution": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract educational institution name"
+        },
+        "degree": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract degree type and field"
+        },
+        "graduation_year": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract graduation year"
+        },
+        "gpa": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract GPA if available"
+        },
+        "field_of_study": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract field of study or major"
+        }
+      }
+    },
+    "Experience": {
+      "type": "object",
+      "properties": {
+        "current_position": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract current job title"
+        },
+        "current_company": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract current company name"
+        },
+        "years_total": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract total years of experience"
+        },
+        "key_achievements": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract key achievements and accomplishments"
+        },
+        "previous_roles": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract previous job roles and companies"
+        }
+      }
+    },
+    "Skills": {
+      "type": "object",
+      "properties": {
+        "technical": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract technical skills and programming languages"
+        },
+        "soft": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract soft skills and interpersonal abilities"
+        },
+        "languages": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract spoken languages"
+        },
+        "certifications": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract certifications and credentials"
+        },
+        "tools": {
+          "type": "string",
+          "inferenceType": "explicit",
+          "instruction": "Extract tools and software proficiency"
+        }
+      }
+    }
+  },
+  "properties": {
+    "personal_info": {
+      "$ref": "#/definitions/PersonalInfo",
+      "instruction": "Extract all personal information from the resume"
+    },
+    "educational_info": {
+      "$ref": "#/definitions/EducationalInfo",
+      "instruction": "Extract all educational background information"
+    },
+    "experience": {
+      "$ref": "#/definitions/Experience",
+      "instruction": "Extract all work experience and professional information"
+    },
+    "skills": {
+      "$ref": "#/definitions/Skills",
+      "instruction": "Extract all skills, certifications, and competencies"
+    }
+  }
+}
