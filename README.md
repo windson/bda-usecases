@@ -23,20 +23,6 @@ More detailed description in [Architecture](architecture/README.md)
 
 ## Quick Start
 
-### 🚀 **Interactive Menu-Driven Script**
-```bash
-# Launch interactive menu
-./scripts/bda_workflow.sh data/sample_resume.pdf
-
-# Menu Options:
-# 1. Test in DEVELOPMENT stage
-# 2. Promote blueprint to LIVE  
-# 3. Process resume (Production)
-# 4. Test in LIVE stage
-# 5. Full workflow (DEV → Promote → LIVE)
-# 6. Exit
-```
-
 ### 1. Deploy Complete Infrastructure (Blueprint + Resources)
 ```bash
 # Deploy everything with CDK (blueprint, project, S3, Lambda, etc.)
@@ -141,18 +127,6 @@ s3://bucket/
             └── result.json            # Structured data
 ```
 
-## Infrastructure Components
-
-### AWS Resources (CDK Managed)
-- **BDA Blueprint** - Hierarchical schema for resume extraction
-- **BDA Data Automation Project** - Custom output configuration
-- **S3 Bucket** - Resume storage with input/output prefixes
-- **Lambda Function** - Event-driven BDA processing (15min timeout)
-- **S3 Event Notifications** - Automatic trigger on input/ uploads
-- **IAM Roles** - Lambda execution + BDA access permissions
-- **DLQ + SNS** - Error handling and alerting
-- **CloudWatch Logs** - Monitoring and debugging
-
 ### Development Workflow
 
 ![BDA Workflow](architecture/bda_workflow.png)
@@ -166,33 +140,46 @@ s3://bucket/
 Extracts structured resume data in organized sections:
 ```json
 {
-  "personal_info": {
-    "full_name": "John Doe",
-    "email": "john.doe@email.com", 
-    "phone": "+1-555-0123",
-    "address": "123 Main St, City, State",
-    "linkedin": "linkedin.com/in/johndoe"
+  "matched_blueprint": {
+    "arn": "arn:aws:bedrock:ap-south-1:###:blueprint/###",
+    "name": "resume-parser-hierarchical-###",
+    "confidence": 1
   },
-  "educational_info": {
-    "institution": "University of Technology",
-    "degree": "Bachelor of Science in Computer Science",
-    "graduation_year": "2020",
-    "gpa": "3.8/4.0",
-    "field_of_study": "Computer Science"
+  "document_class": {
+    "type": "Resume"
   },
-  "experience": {
-    "current_position": "Senior Software Engineer",
-    "current_company": "Tech Corp",
-    "years_total": "5 years",
-    "key_achievements": "Led team of 8 developers...",
-    "previous_roles": "Software Engineer at StartupXYZ..."
+  "split_document": {
+    "page_indices": [0, 1]
   },
-  "skills": {
-    "technical": "Python, JavaScript, AWS, Docker",
-    "soft": "Leadership, Communication, Problem-solving",
-    "languages": "English (Native), Spanish (Fluent)",
-    "certifications": "AWS Solutions Architect",
-    "tools": "Git, Jenkins, Kubernetes, Terraform"
+  "inference_result": {
+    "skills": {
+      "technical": "Programming Languages: Python, JavaScript, Java, Go, SQL Cloud Platforms: AWS, Azure, Google Cloud Platform Frameworks: React, Django, Flask, Express.js Databases: PostgreSQL, MongoDB, Redis, DynamoDB DevOps: Docker, Kubernetes, Jenkins, Terraform, Git",
+      "languages": "English (Native), Spanish (Conversational)",
+      "certifications": "AWS Solutions Architect Associate (AWS-SAA-123456), Certified Kubernetes Administrator (CKA-789012)",
+      "tools": "Python, AWS, Docker, Kubernetes, PostgreSQL, JavaScript, React, Django, Flask, Express.js, JavaScript, React, Node.js, MongoDB, PostgreSQL, Redis, DynamoDB, Jenkins, Terraform, Git",
+      "soft": "Leadership, Team Collaboration, Problem Solving, Communication, Project Management"
+    },
+    "personal_info": {
+      "full_name": "John Smith",
+      "address": "123 Main Street, Seattle, WA 98101",
+      "phone": "(555) 123-4567",
+      "linkedin": "linkedin.com/in/johnsmith",
+      "email": "john.smith@email.com"
+    },
+    "educational_info": {
+      "institution": "University of Washington, Seattle, WA",
+      "graduation_year": "June 2020",
+      "degree": "Bachelor of Science",
+      "gpa": "3.8",
+      "field_of_study": "Computer Science"
+    },
+    "experience": {
+      "key_achievements": "Lead development of cloud-native applications using AWS services, Reduced system latency by 40% through performance optimization, Led team of 5 engineers on microservices migration project, Implemented CI/CD pipeline reducing deployment time by 60%, Developed full-stack web applications for e-commerce platform, Built payment processing system handling $1M+ in monthly transactions, Improved application performance by 50% through code optimization",
+      "current_position": "Senior Software Engineer",
+      "current_company": "Tech Corp",
+      "years_total": "4+",
+      "previous_roles": "Software Engineer, StartupXYZ, July 2020 - December 2021"
+    }
   }
 }
 ```
@@ -202,75 +189,6 @@ Extracts structured resume data in organized sections:
 - ✅ **Easy Integration** - Structured for databases and APIs
 - ✅ **Maintainable Schema** - Reusable object definitions
 - ✅ **Type Safety** - Consistent data types per section
-
-## 🚀 Interactive Menu-Driven Script
-
-### One Script with Interactive Menu
-```bash
-# Launch interactive menu
-./scripts/bda_workflow.sh data/sample_resume.pdf
-
-# Interactive Menu:
-========================================
-BDA Resume Processing Menu
-========================================
-Resume file: data/sample_resume.pdf
-
-1. Test in DEVELOPMENT stage
-2. Promote blueprint to LIVE
-3. Process resume (Production)
-4. Test in LIVE stage
-5. Full workflow (DEV → Promote → LIVE)
-6. Exit
-
-Enter your choice (1-6):
-```
-
-### Script Features
-- **🎯 Menu-Driven**: Clear numbered choices, no confusing prompts
-- **🔍 Blueprint Verification**: Production mode checks blueprint stage
-- **🎨 Beautiful Output**: Colored status messages and progress
-- **📊 Smart Preview**: Displays extracted data summary
-- **🛡️ Error Detection**: Monitors Lambda logs and exits on errors
-- **📁 Organized Results**: Timestamped output files
-- **⏳ Intelligent Waiting**: Polls with timeout protection
-- **🔄 Return to Menu**: After each operation, returns to main menu
-- **📋 Log Monitoring**: Real-time Lambda log tailing with cleanup
-
-### Production Processing (Option 3)
-- **Blueprint Stage Check**: Verifies blueprint is in LIVE stage
-- **Smart Warnings**: Alerts if blueprint not promoted
-- **User Choice**: Continue anyway, promote first, or return to menu
-- **Safe Processing**: Ensures production-ready configuration
-
-### Full Workflow (Option 5)
-- **Automated Flow**: DEV testing → Promotion → LIVE testing
-- **Seamless Experience**: No menu interruptions during workflow
-- **Error Handling**: Stops and returns to menu on any failure
-- **Complete Validation**: End-to-end system verification
-
-## Performance & Scaling
-
-### Real-Time Characteristics
-- **Trigger Latency**: Sub-second S3 event notifications
-- **Processing**: Optimized with LIVE blueprint for production workloads
-- **Concurrency**: 1,000 concurrent Lambda executions (default)
-- **Timeout**: 15 minutes per execution
-- **Auto-scaling**: Handles multiple simultaneous uploads
-
-### Cost Optimization
-- **No idle costs** - Lambda charges per execution only
-- **S3 storage** - Standard tier for input/output
-- **BDA charges** - Per document processing
-- **CloudWatch** - Logs and monitoring
-
-## Error Handling
-
-### Failure Scenarios
-- **Invalid file formats** → Lambda error → DLQ
-- **BDA processing failures** → Retry with exponential backoff
-- **Timeout errors** → DLQ + SNS notification
-- **Permission issues** → CloudWatch logs + alerts
 
 ### Monitoring
 ```bash
@@ -376,100 +294,4 @@ The project includes a comprehensive cleanup script that safely removes all AWS 
 
 # Alternative: CDK-only cleanup (may leave some resources)
 cd infrastructure && uv run cdk destroy
-```
-
-### Alternative Processing Methods
-```bash
-# Direct S3 upload (bypasses automation)
-aws s3 cp data/sample_resume.pdf s3://<bucket-name>/input/
-
-# Manual blueprint promotion
-uv run cli/promote_blueprint.py
-```
-
-### Blueprint Management
-```bash
-# View current blueprint status
-aws bedrock-data-automation get-blueprint --blueprint-arn <arn> --region ap-south-1
-
-# View project configuration  
-aws bedrock-data-automation get-data-automation-project --project-arn <arn> --region ap-south-1
-```
-
-## Configuration
-
-- **Region**: ap-south-1 (APAC)
-- **Blueprint**: Hierarchical schema with 4 main sections
-- **Deployment**: DEVELOPMENT → LIVE promotion workflow
-- **File Formats**: PDF, DOC, images
-- **Lambda Runtime**: Python 3.11
-- **Memory**: 1024 MB
-- **Timeout**: 15 minutes
-
-## Key Features
-
-### Hierarchical Data Extraction
-- **Personal Info**: Contact details and LinkedIn
-- **Educational Info**: Degrees, institutions, GPA
-- **Experience**: Current role, achievements, history
-- **Skills**: Technical, soft skills, certifications, tools
-
-### Infrastructure as Code
-- **Complete CDK Deployment**: Blueprint + Project + Infrastructure
-- **Environment Management**: DEV/LIVE stage promotion
-- **Automated Setup**: Single command deployment
-- **Smart Promotion**: Auto-reads CDK outputs (no manual ARN copying)
-- **Resource Management**: Proper cleanup and updates
-
-### CDK Outputs Integration
-The promotion script automatically reads these CDK outputs:
-- `BlueprintArn` - For blueprint stage promotion
-- `ProjectArn` - For project stage promotion  
-- `BucketName` - S3 bucket for file uploads
-- `LambdaFunctionName` - For monitoring and debugging
-
-**No manual ARN management needed!** 🎉
-
-## Troubleshooting
-
-### Common Issues
-
-**CDK Deployment Fails**
-```bash
-# Ensure you're in the right directory
-cd infrastructure
-
-# Check AWS credentials
-aws sts get-caller-identity
-
-# Bootstrap CDK (one-time setup)
-uv run cdk bootstrap
-```
-
-**Promotion Script Can't Find Outputs**
-```bash
-# Verify stack is deployed
-aws cloudformation describe-stacks --stack-name BDAResumeStack
-
-# Check if you're in the right directory
-# Script should be run from project root, not infrastructure/
-uv run cli/promote_blueprint.py
-```
-
-**Blueprint Processing Fails**
-```bash
-# Check Lambda logs
-aws logs tail /aws/lambda/BDAResumeStack-BDAProcessorFunction --follow
-
-# Verify blueprint is in correct stage
-aws bedrock-data-automation get-blueprint --blueprint-arn <arn> --region ap-south-1
-```
-
-**File Upload Issues**
-```bash
-# Check bucket exists and permissions
-aws s3 ls s3://<bucket-name>/
-
-# Verify file format is supported
-file data/sample_resume.pdf
 ```
