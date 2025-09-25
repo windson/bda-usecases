@@ -34,23 +34,7 @@ uv run cdk deploy
 # Note: This creates blueprint and project in DEVELOPMENT stage
 ```
 
-### 2. Test in Development
-```bash
-# Test with sample resume in DEV stage
-uv run cli/test_upload.py data/sample_resume.pdf
-
-# Verify results and blueprint performance
-```
-
-### 3. Promote to Production
-```bash
-# When ready, promote blueprint and project to LIVE stage
-uv run cli/promote_blueprint.py
-
-# Script automatically reads ARNs from CDK outputs - no manual input needed!
-```
-
-### 4. Interactive Processing
+### 2. Interactive Processing
 ```bash
 # 🚀 Launch interactive menu
 ./scripts/bda_workflow.sh data/sample_resume.pdf
@@ -79,7 +63,6 @@ bda_usecases/
 │   └── pyproject.toml          # Runtime dependencies
 ├── cli/                        # Setup & testing tools
 │   ├── promote_blueprint.py    # Promote DEV → LIVE stage
-│   └── test_upload.py          # Manual upload testing
 ├── scripts/                    # Automation scripts
 │   ├── bda_workflow.sh         # 🚀 Unified processing & workflow automation
 │   └── cleanup.sh              # Infrastructure cleanup script

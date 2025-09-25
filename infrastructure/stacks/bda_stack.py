@@ -5,7 +5,6 @@ from aws_cdk import (
     Stack,
     aws_s3 as s3,
     aws_lambda as _lambda,
-    aws_lambda_python_alpha as lambda_python,
     aws_iam as iam,
     aws_s3_notifications as s3n,
     aws_sqs as sqs,
@@ -58,12 +57,11 @@ class BDAResumeStack(Stack):
         bucket.grant_read_write(lambda_role)
         dlq.grant_send_messages(lambda_role)
 
-        # Lambda function for BDA processing using PythonFunction
-        processor_function = lambda_python.PythonFunction(self, "BDAProcessorFunction",
-            entry="../lambda",
+        # Lambda function for BDA processing using regular Function (no Docker needed)
+        processor_function = _lambda.Function(self, "BDAProcessorFunction",
             runtime=_lambda.Runtime.PYTHON_3_11,
-            index="handler.py",
-            handler="lambda_handler",
+            handler="handler.lambda_handler",
+            code=_lambda.Code.from_asset("../lambda"),
             role=lambda_role,
             timeout=Duration.minutes(15),
             memory_size=1024,
